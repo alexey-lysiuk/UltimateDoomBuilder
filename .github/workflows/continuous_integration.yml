@@ -63,7 +63,7 @@ jobs:
           'Build\Plugins\ThreeDFloorMode.dll', `
           'Source\Plugins\VisplaneExplorer\Resources\vpo.dll', `
           'Build\Plugins\VisplaneExplorer.dll', `
-          'Build\Updater.exe', `
+          'Build\Updater.exe' `
         )
         foreach($file in $files)
         {
