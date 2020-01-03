@@ -24,17 +24,20 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - name: Compile Updater
-      # shell: cmd
-      run: |
-        $msbuild_path = & vswhere -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | select-object -first 1
-        & $msbuild_path Source/Tools/Updater/Updater.csproj -p:Configuration=${{ matrix.config.configuration }} -p:Platform=${{ matrix.config.platform }} -v:minimal
+    # - name: Compile Updater
+    #   # shell: cmd
+    #   run: |
+    #     $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+    #     $msbuild = & "$vswhere" -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | select-object -first 1
+    #     & $msbuild Source/Tools/Updater/Updater.csproj -p:Configuration=${{ matrix.config.configuration }} -p:Platform=${{ matrix.config.platform }} -v:minimal
 
-    - name: Compile Doom Builder
+    - name: Build
       # shell: cmd
       run: |
-        $msbuild_path = vswhere -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | select-object -first 1
-        $msbuild_path Builder.sln -p:Configuration=${{ matrix.config.configuration }} -p:Platform=${{ matrix.config.platform }} -v:minimal
+        $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+        $msbuild = & "$vswhere" -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | select-object -first 1
+        & $msbuild Source\Tools\Updater\Updater.csproj -p:Configuration=${{ matrix.config.configuration }} -p:Platform=${{ matrix.config.platform }} -v:minimal
+        & $msbuild Builder.sln -p:Configuration=${{ matrix.config.configuration }} -p:Platform=${{ matrix.config.platform }} -v:minimal
 
     - name: Upload Package
       uses: actions/upload-artifact@v1
