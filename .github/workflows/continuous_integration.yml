@@ -9,41 +9,43 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        config:
-        - {
-            configuration: "Debug",
-            platform: "x64"
-          }
-        - {
-            configuration: "Release",
-            platform: "x64"
-          }
-        - {
-            configuration: "Debug",
-            platform: "x86"
-          }
-        - {
-            configuration: "Release",
-            platform: "x86"
-          }
+        configuration: [Release, Debug]
+        platform: [x64, x86]
+        # config:
+        # - {
+        #     configuration: "Debug",
+        #     platform: "x64"
+        #   }
+        # - {
+        #     configuration: "Release",
+        #     platform: "x64"
+        #   }
+        # - {
+        #     configuration: "Debug",
+        #     platform: "x86"
+        #   }
+        # - {
+        #     configuration: "Release",
+        #     platform: "x86"
+        #   }
 
     steps:
     - uses: actions/checkout@v1
 
-    # - name: Build
-    #   run: |
-    #     $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
-    #     $msbuild = & "$vswhere" -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | select-object -first 1
-    #     $options = @( `
-    #       '-p:Configuration=${{ matrix.config.configuration }}', `
-    #       '-p:Platform=${{ matrix.config.platform }}', `
-    #       '-p:WindowsTargetPlatformVersion=10.0', `
-    #       '-p:PlatformToolset=v142', `
-    #       '-m', `
-    #       '-v:minimal' `
-    #     )
-    #     & $msbuild Builder.sln $options
-    #     & $msbuild Source\Tools\Updater\Updater.csproj $options
+    - name: Build
+      run: |
+        $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+        $msbuild = & "$vswhere" -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | select-object -first 1
+        $options = @( `
+          '-p:Configuration=${{ matrix.config.configuration }}', `
+          '-p:Platform=${{ matrix.config.platform }}', `
+          '-p:WindowsTargetPlatformVersion=10.0', `
+          '-p:PlatformToolset=v142', `
+          '-m', `
+          '-v:minimal' `
+        )
+        & $msbuild Builder.sln $options
+        & $msbuild Source\Tools\Updater\Updater.csproj $options
 
     - name: Test
       run: |
@@ -76,6 +78,7 @@ jobs:
 
     - name: Prepare Package
       run: |
+        # Delete unwanted files
         Remove-Item Build\Setup -recurse
 
     - name: Upload Package
