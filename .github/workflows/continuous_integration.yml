@@ -27,12 +27,8 @@ jobs:
     - name: Compile Updater
       # shell: cmd
       run: |
-        # set
-        $msbuild_path = vswhere -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | select-object -first 1
-        Write-Output $msbuild_path
-        $msbuild_path = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | select-object -first 1
-        Write-Output $msbuild_path
-        $msbuild_path Source/Tools/Updater/Updater.csproj -p:Configuration=${{ matrix.config.configuration }} -p:Platform=${{ matrix.config.platform }} -v:minimal
+        $msbuild_path = & vswhere -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | select-object -first 1
+        & $msbuild_path Source/Tools/Updater/Updater.csproj -p:Configuration=${{ matrix.config.configuration }} -p:Platform=${{ matrix.config.platform }} -v:minimal
 
     - name: Compile Doom Builder
       # shell: cmd
