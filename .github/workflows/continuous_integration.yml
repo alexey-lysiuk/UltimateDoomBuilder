@@ -69,7 +69,7 @@ jobs:
         {
           if (!(Test-Path -Path $file -PathType Leaf))
           {
-            Write-Error File $file is missing
+            Write-Error "File $file is missing"
             exit 1
           }
         }
