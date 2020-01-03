@@ -46,6 +46,10 @@ jobs:
         & $msbuild Builder.sln $options
         & $msbuild Source\Tools\Updater\Updater.csproj $options
 
+    - name: Prepare Package
+      run: |
+        Remove-Item Build\Setup -recurse
+
     - name: Upload Package
       uses: actions/upload-artifact@v1
       with:
