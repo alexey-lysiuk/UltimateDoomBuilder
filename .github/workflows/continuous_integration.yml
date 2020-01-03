@@ -69,7 +69,7 @@ jobs:
         {
           if (!(Test-Path -Path $file -PathType Leaf))
           {
-            Write-Warning "File $file is missing"
+            Write-Host "ERROR: File $file is missing" -ForegroundColor red
             exit 1
           }
         }
