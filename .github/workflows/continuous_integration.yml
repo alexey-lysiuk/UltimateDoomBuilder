@@ -4,19 +4,25 @@ on: [push, pull_request]
 
 jobs:
   build:
-    name: "${{ matrix.config.name }} ${{ matrix.config.configuration }}"
+    name: "Visual Studio ${{ matrix.config.platform }} ${{ matrix.config.configuration }}"
     runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
         config:
         - {
-            name: "Visual Studio 64-bit",
+            configuration: "Debug",
+            platform: "x64"
+          }
+        - {
             configuration: "Release",
             platform: "x64"
           }
         - {
-            name: "Visual Studio 32-bit",
+            configuration: "Debug",
+            platform: "x86"
+          }
+        - {
             configuration: "Release",
             platform: "x86"
           }
@@ -51,4 +57,4 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         path: Build
-        name: "${{ matrix.config.name }}"
+        name: "vs_${{ matrix.config.platform }}_${{ matrix.config.configuration }}"
