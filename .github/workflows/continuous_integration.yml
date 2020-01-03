@@ -33,9 +33,9 @@ jobs:
 
     - name: Install SDK
       run: |
-        & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" modify `
-         --installPath "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise" `
-         --add Microsoft.VisualStudio.Component.Windows81SDK --passive --norestart
+        Start-Process "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" `
+         -ArgumentList @('modify', '--installPath', 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise', `
+         '--add', 'Microsoft.VisualStudio.Component.Windows81SDK', '--passive', '--norestart') -Wait
 
     - name: Build
       # shell: cmd
