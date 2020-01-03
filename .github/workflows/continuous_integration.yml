@@ -4,19 +4,19 @@ on: [push, pull_request]
 
 jobs:
   build:
-    name: ${{ matrix.config.name }}
+    name: "${{ matrix.config.name }} ${{ matrix.config.configuration }}"
     runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
         config:
         - {
-            name: "Visual Studio 64-bit ${{ matrix.config.configuration }}",
+            name: "Visual Studio 64-bit",
             configuration: "Release",
             platform: "x64"
           }
         - {
-            name: "Visual Studio 32-bit ${{ matrix.config.configuration }}",
+            name: "Visual Studio 32-bit",
             configuration: "Release",
             platform: "x86"
           }
