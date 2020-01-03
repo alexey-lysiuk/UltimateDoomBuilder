@@ -25,15 +25,17 @@ jobs:
     - uses: actions/checkout@v1
 
     - name: Compile Updater
-      shell: cmd
+      # shell: cmd
       run: |
-        set
-        MSBuild.exe Source\Tools\Updater\Updater.csproj /p:Configuration=${{ matrix.config.configuration }} /p:Platform=${{ matrix.config.platform }} /v:minimal
+        # set
+        $msbuild_path = vswhere -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | select-object -first 1
+        $msbuild_path Source\Tools\Updater\Updater.csproj /p:Configuration=${{ matrix.config.configuration }} /p:Platform=${{ matrix.config.platform }} /v:minimal
 
     - name: Compile Doom Builder
-      shell: cmd
+      # shell: cmd
       run: |
-        MSBuild.exe Builder.sln /p:Configuration=${{ matrix.config.configuration }} /p:Platform=${{ matrix.config.platform }} /v:minimal
+        $msbuild_path = vswhere -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | select-object -first 1
+        $msbuild_path Builder.sln /p:Configuration=${{ matrix.config.configuration }} /p:Platform=${{ matrix.config.platform }} /v:minimal
 
     - name: Upload Package
       uses: actions/upload-artifact@v1
