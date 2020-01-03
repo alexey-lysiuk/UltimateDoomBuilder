@@ -11,12 +11,12 @@ jobs:
       matrix:
         config:
         - {
-            name: "Visual Studio 64-bit ${{ configuration }}",
+            name: "Visual Studio 64-bit ${{ matrix.config.configuration }}",
             configuration: "Release",
             platform: "x64"
           }
         - {
-            name: "Visual Studio 32-bit ${{ configuration }}",
+            name: "Visual Studio 32-bit ${{ matrix.config.configuration }}",
             configuration: "Release",
             platform: "x86"
           }
@@ -24,21 +24,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    # - name: Compile Updater
-    #   # shell: cmd
-    #   run: |
-    #     $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
-    #     $msbuild = & "$vswhere" -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | select-object -first 1
-    #     & $msbuild Source/Tools/Updater/Updater.csproj -p:Configuration=${{ matrix.config.configuration }} -p:Platform=${{ matrix.config.platform }} -v:minimal
-
-    # - name: Install SDK
-    #   run: |
-    #     Start-Process "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" `
-    #      -ArgumentList @('modify', '--installPath', 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise', `
-    #      '--add', 'Microsoft.VisualStudio.Component.Windows81SDK', '--passive', '--norestart') -Wait
-
     - name: Build
-      # shell: cmd
       run: |
         $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
         $msbuild = & "$vswhere" -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | select-object -first 1
@@ -52,6 +38,10 @@ jobs:
         )
         & $msbuild Builder.sln $options
         & $msbuild Source\Tools\Updater\Updater.csproj $options
+
+    # - name: Test
+    #   run: |
+    #     ....
 
     - name: Prepare Package
       run: |
