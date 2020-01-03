@@ -1,0 +1,41 @@
+name: Continuous Integration
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: ${{ matrix.config.name }}
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+        - {
+            name: "Visual Studio 64-bit",
+            configuration: "Release",
+            platform: "x64"
+          }
+        - {
+            name: "Visual Studio 32-bit",
+            configuration: "Release",
+            platform: "Win32"
+          }
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Compile Updater
+      # shell: cmd
+      run: |
+        MSBuild.exe Source\Tools\Updater\Updater.csproj /p:Configuration=${{ matrix.config.configuration }} /p:Platform=${{ matrix.config.platform }} /v:minimal
+
+    - name: Compile Doom Builder
+      # shell: cmd
+      run: |
+        MSBuild.exe Builder.sln /p:Configuration=${{ matrix.config.configuration }} /p:Platform=${{ matrix.config.platform }} /v:minimal
+
+    - name: Upload Package
+      uses: actions/upload-artifact@v1
+      with:
+        path: Build
+        name: "${{ matrix.config.package_name }}"
