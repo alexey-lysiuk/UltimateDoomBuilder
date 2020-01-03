@@ -11,12 +11,12 @@ jobs:
       matrix:
         config:
         - {
-            name: "Visual Studio 64-bit",
+            name: "Visual Studio 64-bit ${{ configuration }}",
             configuration: "Release",
             platform: "x64"
           }
         - {
-            name: "Visual Studio 32-bit",
+            name: "Visual Studio 32-bit ${{ configuration }}",
             configuration: "Release",
             platform: "x86"
           }
