@@ -29,13 +29,13 @@ jobs:
       run: |
         # set
         $msbuild_path = vswhere -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | select-object -first 1
-        $msbuild_path "Source\Tools\Updater\Updater.csproj" /p:Configuration=${{ matrix.config.configuration }} /p:Platform=${{ matrix.config.platform }} /v:minimal
+        $msbuild_path Source/Tools/Updater/Updater.csproj -p:Configuration=${{ matrix.config.configuration }} -p:Platform=${{ matrix.config.platform } -v:minimal
 
     - name: Compile Doom Builder
       # shell: cmd
       run: |
         $msbuild_path = vswhere -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe | select-object -first 1
-        $msbuild_path Builder.sln /p:Configuration=${{ matrix.config.configuration }} /p:Platform=${{ matrix.config.platform }} /v:minimal
+        $msbuild_path Builder.sln -p:Configuration=${{ matrix.config.configuration }} -p:Platform=${{ matrix.config.platform }} -v:minimal
 
     - name: Upload Package
       uses: actions/upload-artifact@v1
