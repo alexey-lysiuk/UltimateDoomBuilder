@@ -49,12 +49,12 @@ jobs:
           Build/Plugins/ThreeDFloorMode.dll \
           Build/Plugins/VisplaneExplorer.dll \
         )
-        foreach filename ${FILES}
+        for filename in "${FILES[@]}"
           if [ ! -f $filename ]; then
            echo "ERROR: File $filename is missing"
            exit 1
           fi
-        end
+        done
 
     - name: Prepare Package
       run: |
