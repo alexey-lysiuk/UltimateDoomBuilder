@@ -27,14 +27,34 @@ jobs:
         if [[ "${{ runner.os }}" == 'macOS' ]]; then
           make mac
         elif [[ "${{ runner.os }}" == 'Linux' ]]; then
-          sudo apt-get install mesa-common-dev
+          sudo apt install mesa-common-dev
           make linux
         fi
 
     - name: Test Files Presence
       run: |
-        ls -lR .
-        # TODO
+        FILES=( \
+          Build/Builder.exe \
+          Build/libBuilderNative.so \
+          Build/Plugins/AutomapMode.dll \
+          Build/Plugins/BuilderEffects.dll \
+          Build/Plugins/BuilderModes.dll \
+          Build/Plugins/ColorPicker.dll \
+          Build/Plugins/CommentsPanel.dll \
+          Build/Plugins/NodesViewer.dll \
+          Build/Plugins/SoundPropagationMode.dll \
+          Build/Plugins/StairSectorBuilder.dll \
+          Build/Plugins/TagExplorer.dll \
+          Build/Plugins/TagRange.dll \
+          Build/Plugins/ThreeDFloorMode.dll \
+          Build/Plugins/VisplaneExplorer.dll \
+        )
+        foreach filename ${FILES}
+          if [ ! -f $filename ]; then
+           echo "ERROR: File $filename is missing"
+           exit 1
+          fi
+        end
 
     - name: Prepare Package
       run: |
@@ -45,4 +65,4 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         path: Build
-        name: "vs_${{matrix.config.name }}"
+        name: "UDB_${{ matrix.config.name }}"
