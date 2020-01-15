@@ -49,7 +49,7 @@ jobs:
           Build/Plugins/ThreeDFloorMode.dll \
           Build/Plugins/VisplaneExplorer.dll \
         )
-        for filename in "${FILES[@]}"
+        for filename in "${FILES[@]}"; do
           if [ ! -f $filename ]; then
            echo "ERROR: File $filename is missing"
            exit 1
