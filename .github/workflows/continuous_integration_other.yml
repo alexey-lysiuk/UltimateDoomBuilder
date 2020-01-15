@@ -1,0 +1,35 @@
+name: Continuous Integration Other
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+        - {
+            name: "Linux",
+            os: ubuntu-latest
+          }
+        - {
+            name: "macOS",
+            os: macos-latest
+          }
+
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Build
+      run: |
+        if [[ "${{ runner.os }}" == 'macOS' ]]; then
+          make mac
+        else
+          make linux
+        fi
+
+#TODO: tests
+#TODO: artifacts
