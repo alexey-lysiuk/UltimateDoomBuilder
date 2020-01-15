@@ -1,4 +1,4 @@
-name: Continuous Integration Other
+name: Continuous Integration - Other
 
 on: [push, pull_request]
 
@@ -11,14 +11,13 @@ jobs:
       matrix:
         config:
         - {
-            name: "Linux",
-            os: ubuntu-latest
-          }
-        - {
             name: "macOS",
             os: macos-latest
           }
-
+        - {
+            name: "Linux",
+            os: ubuntu-latest
+          }
 
     steps:
     - uses: actions/checkout@v1
@@ -27,9 +26,23 @@ jobs:
       run: |
         if [[ "${{ runner.os }}" == 'macOS' ]]; then
           make mac
-        else
+        elif [[ "${{ runner.os }}" == 'Linux' ]]; then
+          sudo apt-get install mesa-common-dev
           make linux
         fi
 
-#TODO: tests
-#TODO: artifacts
+    - name: Test Files Presence
+      run: |
+        ls -lR .
+        # TODO
+
+    - name: Prepare Package
+      run: |
+        # Delete unwanted files
+        rm -r Build/Setup
+
+    - name: Upload Package
+      uses: actions/upload-artifact@v1
+      with:
+        path: Build
+        name: "vs_${{matrix.config.name }}"
