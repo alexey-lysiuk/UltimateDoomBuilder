@@ -28,6 +28,11 @@ jobs:
         & $msbuild Builder.sln $options
         & $msbuild Source\Tools\Updater\Updater.csproj $options
 
+    - name: Temp
+      shell: bash
+      run: |
+        ls -lR
+
     - name: Test Files Presence
       run: |
         $files = @( `
