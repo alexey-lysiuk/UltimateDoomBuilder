@@ -26,9 +26,9 @@ jobs:
           '-verbosity:minimal' `
         )
         & $msbuild Builder.sln $options
-        if (-not $?) { throw "Failed to build Builder" }
+        if (-not $?) { exit $? }
         & $msbuild Source\Tools\Updater\Updater.csproj $options
-        if (-not $?) { throw "Failed to build Updater" }
+        if (-not $?) { exit $? }
 
     - name: Temp
       shell: bash
